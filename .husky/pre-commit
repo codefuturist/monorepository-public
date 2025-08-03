@@ -1,0 +1,64 @@
+#!/bin/sh
+# .husky/pre-commit
+
+echo "🔍 Running pre-commit checks..."
+
+# Check branch naming convention
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+VALID_PATTERN="^(main|develop|(feature|bugfix|hotfix|release|chore)\/[a-z-]+\/[A-Z0-9-]+(-[a-z0-9-]+)*|chore\/[a-z-]+\/[a-z0-9-]+)$"
+
+if ! echo "$BRANCH" | grep -qE "$VALID_PATTERN"; then
+  echo "❌ Branch name '$BRANCH' does not follow naming convention"
+  echo "✅ Use one of these patterns:"
+  echo "   - feature/[scope]/[TICKET]-[description]"
+  echo "   - bugfix/[scope]/[TICKET]-[description]"
+  echo "   - hotfix/[TICKET]-[description]"
+  echo "   - release/[version]"
+  echo "   - chore/[scope]/[description]"
+  echo ""
+  echo "📝 Examples:"
+  echo "   - feature/web/JIRA-123-add-user-authentication"
+  echo "   - bugfix/api/JIRA-456-fix-memory-leak"
+  echo "   - hotfix/JIRA-789-critical-security-patch"
+  echo "   - release/1.2.0"
+  echo "   - chore/deps/update-dependencies"
+  exit 1
+fi
+
+echo "✅ Branch name '$BRANCH' follows naming convention"
+
+# Check if we're not on main or develop
+if [ "$BRANCH" = "main" ] || [ "$BRANCH" = "develop" ]; then
+  echo "⚠️  Direct commits to '$BRANCH' are discouraged"
+  echo "   Consider creating a feature branch instead"
+fi
+
+# Check for merge conflicts
+if git ls-files -u | grep -q .; then
+  echo "❌ Merge conflicts detected. Please resolve them before committing."
+  exit 1
+fi
+
+# Lint staged files
+echo "🔍 Linting staged files..."
+npx lint-staged
+
+# Run type checking on affected files
+echo "🔍 Type checking..."
+if command -v pnpm > /dev/null 2>&1; then
+  pnpm turbo run type-check --affected --filter="[HEAD^1]" || {
+    echo "❌ Type checking failed"
+    exit 1
+  }
+fi
+
+# Run tests on affected packages
+echo "🧪 Running tests on affected packages..."
+if command -v pnpm > /dev/null 2>&1; then
+  pnpm turbo run test --affected --filter="[HEAD^1]" || {
+    echo "❌ Tests failed"
+    exit 1
+  }
+fi
+
+echo "✅ All pre-commit checks passed!"

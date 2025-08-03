@@ -1,0 +1,39 @@
+#!/bin/sh
+# .husky/commit-msg
+
+echo "🔍 Validating commit message..."
+
+# Read the commit message
+COMMIT_MSG=$(cat "$1")
+
+# Conventional commits pattern
+PATTERN="^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-z-]+\))?: .{1,50}"
+
+if ! echo "$COMMIT_MSG" | grep -qE "$PATTERN"; then
+  echo "❌ Invalid commit message format!"
+  echo ""
+  echo "✅ Use conventional commits format:"
+  echo "   <type>(<scope>): <description>"
+  echo ""
+  echo "📝 Types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert"
+  echo "📝 Scopes: web, mobile, api, ui, utils, types, deps, release, ci"
+  echo ""
+  echo "💡 Examples:"
+  echo "   feat(web): add user authentication"
+  echo "   fix(api): resolve memory leak in user service"
+  echo "   docs(readme): update installation instructions"
+  echo "   chore(deps): update dependencies"
+  echo ""
+  exit 1
+fi
+
+# Check for ticket reference in feature/bugfix/hotfix branches
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if echo "$BRANCH" | grep -qE "^(feature|bugfix|hotfix)/"; then
+  if ! echo "$COMMIT_MSG" | grep -qE "(JIRA-[0-9]+|TICKET-[0-9]+|#[0-9]+)"; then
+    echo "⚠️  Consider adding ticket reference for traceability"
+    echo "   Example: feat(web): add login JIRA-123"
+  fi
+fi
+
+echo "✅ Commit message format is valid"
