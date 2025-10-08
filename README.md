@@ -1,10 +1,11 @@
-# Monorepository Rework
+# Monorepository Public
 
 A comprehensive monorepo implementation with modern development practices, automated workflows, and scalable architecture.
 
 ## 🎯 Overview
 
 This project demonstrates a production-ready monorepo structure featuring:
+
 - **Multi-platform applications** (Web, Mobile, Admin, Desktop)
 - **Shared component libraries** and utilities
 - **Microservices architecture** with API, GraphQL, WebSocket services
@@ -15,12 +16,14 @@ This project demonstrates a production-ready monorepo structure featuring:
 ## 🏗️ Architecture
 
 ### Applications
+
 - **`apps/web/`** - Next.js web application
 - **`apps/mobile/`** - React Native mobile app
 - **`apps/admin/`** - Admin dashboard
 - **`apps/desktop/`** - Electron desktop application
 
 ### Shared Packages
+
 - **`packages/ui/`** - Component library with Storybook
 - **`packages/utils/`** - Utility functions
 - **`packages/types/`** - Shared TypeScript definitions
@@ -29,6 +32,7 @@ This project demonstrates a production-ready monorepo structure featuring:
 - **`packages/analytics/`** - Analytics package
 
 ### Backend Services
+
 - **`services/api/`** - REST API service
 - **`services/graphql/`** - GraphQL API
 - **`services/websocket/`** - Real-time WebSocket service
@@ -41,16 +45,19 @@ This project demonstrates a production-ready monorepo structure featuring:
 We use a **Git Flow-inspired strategy** optimized for continuous integration:
 
 ### Core Branches
+
 - **`main`** - Production-ready code (🔒 Protected)
 - **`develop`** - Integration branch for staging (🛡️ Protected)
 
 ### Supporting Branches
+
 - **`feature/[scope]/[TICKET]-[description]`** - New features
 - **`bugfix/[scope]/[TICKET]-[description]`** - Bug fixes
 - **`hotfix/[TICKET]-[description]`** - Critical production fixes
 - **`release/[version]`** - Release preparation
 
 **Example branch names:**
+
 ```
 feature/web/JIRA-123-add-user-authentication
 bugfix/api/JIRA-456-fix-memory-leak
@@ -59,6 +66,7 @@ release/1.2.0
 ```
 
 ### Automated Workflows
+
 - ✅ Branch naming validation
 - ✅ Conventional commit enforcement
 - ✅ Automated testing on affected packages
@@ -69,6 +77,7 @@ release/1.2.0
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js 18+
 - pnpm 8+
 - Git
@@ -77,26 +86,30 @@ release/1.2.0
 ### Development Setup
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/codefuturist/monorepository-rework.git
    cd monorepository-rework
    ```
 
 2. **Install dependencies**
+
    ```bash
    pnpm install
    ```
 
 3. **Set up development environment**
+
    ```bash
    pnpm run dev:setup
    ```
 
 4. **Start development servers**
+
    ```bash
    # Start all apps
    pnpm run dev
-   
+
    # Start specific app
    pnpm run dev --filter=web
    ```
@@ -157,6 +170,7 @@ pnpm run build --filter=web
 ## 🔧 Available Scripts
 
 ### Development
+
 - `pnpm run dev` - Start all development servers
 - `pnpm run dev:setup` - Setup development environment
 - `pnpm run type-check` - Run TypeScript type checking
@@ -164,22 +178,26 @@ pnpm run build --filter=web
 - `pnpm run format` - Format code with Prettier
 
 ### Testing
+
 - `pnpm test` - Run all tests
 - `pnpm run test:unit` - Run unit tests
 - `pnpm run test:integration` - Run integration tests
 - `pnpm run test:e2e` - Run end-to-end tests
 
 ### Build & Deploy
+
 - `pnpm build` - Build all packages
 - `pnpm run build:affected` - Build affected packages
 - `pnpm run deploy:staging` - Deploy to staging
 - `pnpm run deploy:production` - Deploy to production
 
 ### Branch Management
+
 - `pnpm run branch:health` - Check branch health
 - `pnpm run branch:cleanup` - Get cleanup suggestions
 
 ### Release Management
+
 - `pnpm run release:prepare <version>` - Prepare release
 - `pnpm run changeset` - Create changeset
 - `pnpm run changeset:version` - Update versions
