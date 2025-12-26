@@ -2099,3 +2099,4 @@ _migration/
 # *.pkg
 # *.deb
 # *.rpm
+sqlite_mcp_server.db
