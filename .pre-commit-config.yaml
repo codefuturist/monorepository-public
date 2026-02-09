@@ -17,6 +17,26 @@ fail_fast: false  # Run all hooks even if one fails
 default_language_version:
   python: python3
 
+# =============================================================================
+# Global exclusions - Skip generated/cached/third-party/test libs
+# =============================================================================
+exclude: |
+  (?x)^(
+    test/libs/.*|
+    node_modules/.*|
+    dist/.*|
+    build/.*|
+    \.venv/.*|
+    __pycache__/.*|
+    \.pytest_cache/.*|
+    \.git/.*|
+    vendor/.*|
+    external/.*|
+    .*\.lock$|
+    .*-lock\.(json|yaml)$|
+    .*\.min\.(js|css)$
+  )$
+
 repos:
   # Usage: pre-commit run autoupdate --hook-stage manual
   - repo: local
